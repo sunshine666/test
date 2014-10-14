@@ -1,0 +1,112 @@
+设计风格2
+entity state is
+port (d, clk, rst : in std_logic;
+       q: out std_logic);
+end state;
+
+architecture behav of state is
+  type state is (s0, s1, s2, s3);
+  signal pr_state, nx_state: state;
+  signal temp: std_logic;
+begin
+  process(rst, clk)
+    begin
+      if(rst = '1') then
+        pr_state <= s0;
+        q <= '0';
+      elsif (clk'event and clk = '1') then
+	q <= temp;
+	pr_state <= nx_state;
+      end if; 
+  end process;
+
+process (d, pr_state)
+begin
+  case pr_state is
+    when s0 =>
+      temp <= '0';
+      if(d = '1' ) then 
+	nx_state <= s1;
+      else 
+	nx_state <= s0;
+      end if;
+    when s1 =>
+      temp <= '0';
+      if(d = '1' ) then
+        nx_state <= s2;
+      else
+        nx_state <= s0;
+      end if;
+    when s2 =>
+      temp <= '0';
+      if(d = '1' ) then
+        nx_state <= s3;
+      else
+        nx_state <= s0;
+      end if;
+    when s3 =>
+      temp <= '1';
+      if(d = '1' ) then
+        nx_state <= s3;
+      else
+        nx_state <= s0;
+      end if;
+  end case;
+end process;
+end behav;
+
+
+设计风格1
+entity state1 is
+port (d, clk, rst : in std_logic;
+       q: out std_logic);
+end state1;
+
+architecture behav of state1 is
+  type state is (s0, s1, s2, s3);
+  signal pr_state, nx_state: state;
+begin
+  process(rst, clk)
+    begin
+      if(rst = '1') then
+        pr_state <= s0;
+      elsif (clk'event and clk = '1') then
+	pr_state <= nx_state;
+      end if; 
+  end process;
+
+process (d, pr_state)
+begin
+  case pr_state is
+    when s0 =>
+      q <= '0';
+      if(d = '1' ) then 
+	nx_state <= s1;
+      else 
+	nx_state <= s0;
+      end if;
+    when s1 =>
+      q <= '0';
+      if(d = '1' ) then
+        nx_state <= s2;
+      else
+        nx_state <= s0;
+      end if;
+    when s2 =>
+      q <= '0';
+      if(d = '1' ) then
+        nx_state <= s3;
+      else
+        nx_state <= s0;
+      end if;
+    when s3 =>
+      q <= '1';
+      if(d = '1' ) then
+        nx_state <= s3;
+      else
+        nx_state <= s0;
+      end if;
+  end case;
+end process;
+end behav;
+风格1不同步 风格2必须同步
