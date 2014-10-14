@@ -26,6 +26,7 @@ int main()
 				printf("%d %d %d\n",j+1,s1+1,a[s1][j]);
 		}  
 	}
+        printf("hello");
 	return 0;
 }
 			   
