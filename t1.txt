@@ -1,0 +1,66 @@
+----------------------------------------------------------------------------------
+-- Company: 
+-- Engineer: 
+-- 
+-- Create Date:    11:00:55 06/27/2014 
+-- Design Name: 
+-- Module Name:    T-4 - Behavioral 
+-- Project Name: 
+-- Target Devices: 
+-- Tool versions: 
+-- Description: 
+--
+-- Dependencies: 
+--
+-- Revision: 
+-- Revision 0.01 - File Created
+-- Additional Comments: 
+--
+----------------------------------------------------------------------------------
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use ieee.std_logic_unsigned.all;
+
+entity Dff is
+    PORT (  d : IN  STD_LOGIC;  
+                 clk : IN  STD_LOGIC; 
+                 q : OUT STD_LOGIC);
+end Dff;
+
+architecture Behavioral of Dff is
+
+begin
+    process(clk) 
+    begin
+    IF (clk ' EVENT AND clk = '1' )THEN
+      q <= d;
+    end if;
+    end process;     
+end Behavioral;
+----------------------------------------------------------------------------------
+
+----------------------------------------------------------------------------------
+LIBRARY IEEE;  
+USE IEEE.STD_LOGIC_1164.ALL;  
+USE IEEE.STD_LOGIC_UNSIGNED.ALL;  
+
+entity T4 is
+    PORT (  A : IN  STD_LOGIC;  
+                 clk : IN  STD_LOGIC; 
+                 B : OUT STD_LOGIC);  
+end T4;
+
+architecture Behavioral of T4 is
+   component Dff
+	port ( d: in std_logic;
+          	clk: in  STD_LOGIC;
+	         q:out std_logic);
+	end component;
+   signal temp:std_logic_vector (0 to 4);
+begin
+   temp(0) <= A;
+	l1:for i in 0 to 3 generate
+      dffx:Dff port map(temp(i),clk,temp(i+1));
+	   end generate;
+	B <= temp(4);
+end Behavioral;
